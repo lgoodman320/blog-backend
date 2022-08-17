@@ -2,7 +2,15 @@
 const express = require("express");
 const server = express();
 const cors = require("cors");
-server.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+server.use(
+    cors({
+        credentials: true,
+        origin: [
+            "http://localhost:3000",
+            "https://lgoodman320-blog-backend.herokuapp.com",
+        ],
+    })
+);
 const bodyParser = require("body-parser");
 server.use(bodyParser.json());
 const bcrypt = require("bcrypt");
@@ -109,9 +117,9 @@ server.get("/authors", async (req, res) => {
 server.get("/author/:id", async (req, res) => {
     res.send({
         posts: await Post.findAll({ where: { authorID: req.params.id } }),
-		user: await User.findByPk(req.params.id, {
-			attributes: ["username"],
-		}),
+        user: await User.findByPk(req.params.id, {
+            attributes: ["username"],
+        }),
     });
 });
 
