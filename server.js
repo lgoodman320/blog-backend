@@ -7,7 +7,7 @@ server.use(
         credentials: true,
         origin: [
             "http://localhost:3000",
-            "https://lgoodman320-blog-backend.herokuapp.com",
+            "https://lgoodman320-blog-frontend.herokuapp.com",
         ],
     })
 );
