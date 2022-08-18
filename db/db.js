@@ -2,9 +2,25 @@
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 
-const db = new Sequelize("postgres://larrygoodman@localhost:5432/blog", {
-    logging: false,
-});
+let options = {}
+let databaseURL = process.env.DATABASE_URL;
+if (!databaseURL) {
+    databaseURL = "postgres://larrygoodman@localhost:5432/blog";
+    options = {
+        logging: false,
+    };
+} else {
+    options = {
+        logging: false,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
+    };
+}
+const db = new Sequelize(databaseURL, options);
 const User = require("./User")(db);
 const Post = require("./Post")(db);
 
