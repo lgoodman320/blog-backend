@@ -123,34 +123,12 @@ server.get("/author/:id", async (req, res) => {
     });
 });
 
+let port = process.env.PORT;
+if (!port) {
+    // otherwise, fallback to localhost 3001
+    port = 3001;
+}
 //#9 run express API server in background to listen for incoming requests
-server.listen(3001, () => {
+server.listen(port, () => {
     console.log("Server running.");
 });
-
-//#10 seeding the database
-const createFirstUser = async () => {
-    const users = await User.findAll();
-    if (users.length === 0) {
-        User.create({
-            username: "max",
-            password: bcrypt.hashSync("supersecret", 10),
-        });
-    }
-};
-
-createFirstUser();
-
-const createSecondUser = async () => {
-    const secondUser = await User.findOne({
-        where: { username: "mr_discipline" },
-    });
-    if (!secondUser) {
-        User.create({
-            username: "mr_discipline",
-            password: bcrypt.hashSync("discipline", 10),
-        });
-    }
-};
-
-createSecondUser();
