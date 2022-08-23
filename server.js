@@ -31,6 +31,23 @@ server.get("/", (req, res) => {
     res.send({ hello: "world" });
 });
 
+server.post("/createAccount", async (req, res) => {
+    const userWithThisUsername = await User.findOne({
+        where: { username: req.body.username},
+    });
+    if (userWithThisUsername) {
+        res.send({
+            error: "Username is already taken. Go fish!",
+        });
+    } else {
+        User.create({
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, 10),
+        });
+        res.send({ success: true});
+    }
+});
+
 server.post("/login", async (req, res) => {
     const user = await User.findOne(
         { where: { username: req.body.username } },
